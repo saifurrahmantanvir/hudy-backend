@@ -29,7 +29,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
          quantity: quantity
       }
    })
-   console.log(lineItems, id)
 
    const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -59,8 +58,6 @@ const createOrderCheckout = async (session, res) => {
          price: amount / 100
       }
    })
-
-   console.log(session)
 
    await Order.create({ user, products, amount: _amount / 100 })
 

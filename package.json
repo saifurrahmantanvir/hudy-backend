@@ -4,10 +4,10 @@
   "description": "eCommerce API from scratch",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "Tanvir Rahman",
+  "author": "Saifur rahman Tanvir",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
