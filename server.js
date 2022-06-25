@@ -22,7 +22,7 @@ mongoose.connect(DB, {
 const PORT = process.env.PORT || 8000;
 
 const server = app.listen(PORT, () => {
-   console.log(`Server listening on http://localhost:${PORT}`)
+   console.log(`Server listening on port ${PORT}`)
 })
 
 process.on('unhandledRejection', (error) => {
@@ -31,5 +31,13 @@ process.on('unhandledRejection', (error) => {
 
    server.close(() => {
       process.exit(1)
+   })
+})
+
+process.on('SIGTERM', () => {
+   console.log('SIGTERM received. Shutting Down...')
+
+   server.close(() => {
+      console.log('Process Terminated 💥')
    })
 })

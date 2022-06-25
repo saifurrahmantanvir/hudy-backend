@@ -70,10 +70,9 @@ exports.getProduct = catchAsync(async (req, res, next) => {
    })
 })
 
-/* TODO: need to change the image url */
 exports.createProduct = catchAsync(async (req, res, next) => {
    if (req.file)
-      req.body.image = `http://localhost:8000/img/products/${req.file.filename}`
+      req.body.image = `https://hudy-tanvir.herokuapp.com/img/products/${req.file.filename}`
 
    const fields = ['size', 'tags']
 

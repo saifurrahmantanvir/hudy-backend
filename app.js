@@ -15,13 +15,12 @@ const productRouter = require('./routes/productRoutes')
 const reviewRouter = require('./routes/reviewRoutes')
 const orderRouter = require('./routes/orderRoutes')
 const viewRouter = require('./routes/viewRoutes')
+const { webhookCheckout } = require('./controllers/orderController')
 const globalErrorHandler = require('./controllers/errorController')
 
-/* TODO: delete this later
-const { testOrderCheckout } = require('./controllers/orderController')
-*/
-
 const app = express();
+
+app.enable('trust proxy')
 
 /* setting pug as view engine */
 app.set('view engine', 'pug')
@@ -49,10 +48,12 @@ app.use('/api', limiter)
 
 /* cross origin resource sharing */
 app.use(cors({
-   origin: 'http://localhost:3000',
+   origin: 'https://hudy-tanvir.netlify.app',
    methods: ['GET', 'POST'],
    credentials: true
 }))
+
+app.post('/webhook-checkout', express.raw({ type: 'application/json' }), webhookCheckout)
 
 /* body parser, reading data from body into req.body */
 app.use(express.json({ limit: '200kb' }))
@@ -74,7 +75,7 @@ app.use((req, res, next) => {
       'Content-Security-Policy',
       "script-src * self blob: ;"
    )
-   res.set('Access-Control-Allow-Origin', 'http://localhost:3000')
+   res.set('Access-Control-Allow-Origin', 'https://hudy-tanvir.netlify.app')
    /* console.log(req.cookies.jwt) */
    next()
 })
@@ -86,10 +87,6 @@ app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use('/api/reviews', reviewRouter)
 app.use('/api/orders', orderRouter)
-
-/* TODO: delete this later
-app.post('/test-order-checkout', testOrderCheckout)
-*/
 
 app.all('*', (req, res) => {
    res.status(200).render('error')
