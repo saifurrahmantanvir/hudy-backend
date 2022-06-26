@@ -11,7 +11,7 @@ const signToken = (id, isAdmin) => {
    })
 }
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
    const token = signToken(user._id, user.isAdmin)
 
    const cookieOptions = {
@@ -49,7 +49,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       name, email, password, passwordConfirm
    })
 
-   createSendToken(user, 201, res)
+   createSendToken(user, 201, req, res)
 })
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -65,7 +65,7 @@ exports.login = catchAsync(async (req, res, next) => {
       return next(new AppError('Incorrect email or password', 401))
    }
 
-   createSendToken(user, 200, res)
+   createSendToken(user, 200, req, res)
 })
 
 exports.logout = (req, res) => {
